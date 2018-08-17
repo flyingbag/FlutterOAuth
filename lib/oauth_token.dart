@@ -1,4 +1,4 @@
-import 'package:flutter_oauth/lib/model/config.dart';
+import 'package:flutter_oauth/model/config.dart';
 
 class TokenRequestDetails {
 

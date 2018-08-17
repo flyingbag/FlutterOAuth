@@ -11,5 +11,5 @@ class Config {
 
   Config(this.authorizationUrl, this.tokenUrl, this.clientId,
       this.clientSecret, this.redirectUri, this.responseType,
-      {this.contentType = "application/json", this.parameters, this.headers});
+      {this.contentType = "application/x-www-form-urlencoded", this.parameters, this.headers});
 }

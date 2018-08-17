@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_oauth/lib/flutter_auth.dart';
-import 'package:flutter_oauth/lib/model/config.dart';
-import 'package:flutter_oauth/lib/oauth.dart';
-import 'package:flutter_oauth/lib/token.dart';
+import 'package:flutter_oauth/flutter_auth.dart';
+import 'package:flutter_oauth/model/config.dart';
+import 'package:flutter_oauth/oauth.dart';
+import 'package:flutter_oauth/token.dart';
 
 void main() {
   runApp(new FlutterView());
@@ -55,11 +55,14 @@ class MainState extends State<Main> {
 
   authorise() async {
     final OAuth flutterOAuth = new FlutterOAuth(new Config(
-        "https://www.strava.com/oauth/authorize",
-        "https://www.strava.com/oauth/token",
-        "CLIENT_ID",
-        "CLIENT_SECRET",
-        "http://localhost:8080",
+        // Use Keycloak settings from https://www.jhipster.tech/security/#oauth2
+        "http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/auth",
+        "http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/token",
+        "web_app",
+        "web_app",
+        // For connecting to a local JHipster running on 8080 port, you'll need
+        // to add http://localhost:8100 as a Login redirect URI as well.
+        "http://localhost:8100",
         "code"));
     Token token = await flutterOAuth.performAuthorization();
     var alert = new AlertDialog(

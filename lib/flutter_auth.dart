@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter_oauth/lib/auth_code_information.dart';
-import 'package:flutter_oauth/lib/model/config.dart';
-import 'package:flutter_oauth/lib/oauth.dart';
+import 'package:flutter_oauth/auth_code_information.dart';
+import 'package:flutter_oauth/model/config.dart';
+import 'package:flutter_oauth/oauth.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class FlutterOAuth extends OAuth {
@@ -23,7 +23,9 @@ class FlutterOAuth extends OAuth {
 
   Future<String> requestCode() async {
     if (shouldRequestCode() && !isBrowserOpen) {
-      await webView.close();
+      webView.onDestroy.first.then((_) {
+        close();
+      });
       isBrowserOpen = true;
 
       server = await createServer();
@@ -35,8 +37,7 @@ class FlutterOAuth extends OAuth {
       });
 
       webView.launch("${requestDetails.url}?$urlParams",
-          clearCookies: requestDetails.clearCookies,
-          fullScreen: requestDetails.fullScreen);
+          clearCookies: requestDetails.clearCookies);
 
       code = await onCode.first;
       close();
@@ -53,7 +54,8 @@ class FlutterOAuth extends OAuth {
   }
 
   Future<HttpServer> createServer() async {
-    final server = await HttpServer.bind(InternetAddress.LOOPBACK_IP_V4, 8080,
+    int port = Uri.parse(configuration.redirectUri).port;
+    final server = await HttpServer.bind(InternetAddress.loopbackIPv4, port,
         shared: true);
     return server;
   }

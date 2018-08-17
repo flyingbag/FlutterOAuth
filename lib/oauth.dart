@@ -3,10 +3,10 @@ library flutter_oauth;
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter_oauth/lib/auth_code_information.dart';
-import 'package:flutter_oauth/lib/model/config.dart';
-import 'package:flutter_oauth/lib/oauth_token.dart';
-import 'package:flutter_oauth/lib/token.dart';
+import 'package:flutter_oauth/auth_code_information.dart';
+import 'package:flutter_oauth/model/config.dart';
+import 'package:flutter_oauth/oauth_token.dart';
+import 'package:flutter_oauth/token.dart';
 import 'package:http/http.dart';
 
 abstract class OAuth {
@@ -23,9 +23,9 @@ abstract class OAuth {
   Future<Map<String, dynamic>> getToken() async {
     if (token == null) {
       Response response = await post("${tokenRequest.url}",
-          body: JSON.encode(tokenRequest.params),
+          body: tokenRequest.params,
           headers: tokenRequest.headers);
-      token = JSON.decode(response.body);
+      token = json.decode(response.body);
     }
     return token;
   }
